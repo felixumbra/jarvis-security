@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jarvis | SI Protection Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f8fafc;
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+            
+            /* Vibrant Pastels for Attention */
+            --tile-blue: #e0f2fe;
+            --tile-blue-border: #bae6fd;
+            
+            --tile-green: #dcfce7;
+            --tile-green-border: #bbf7d0;
+            
+            --tile-purple: #f3e8ff;
+            --tile-purple-border: #e9d5ff;
+            
+            --tile-peach: #ffedd5;
+            --tile-peach-border: #fed7aa;
+
+            --tile-rose: #ffe4e6;
+            --tile-rose-border: #fecdd3;
+
+            --tile-red-alert: #fee2e2;
+            --tile-red-border: #fca5a5;
+            
+            --tile-white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            padding: 0 0 150px 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* INTRO / HERO SECTION */
+        .intro-section {
+            position: relative;
+            min-height: 85vh; 
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0e7ff 100%);
+            padding: 0 20px;
+            overflow: hidden;
+            margin-bottom: 40px;
+        }
+
+        .intro-content {
+            z-index: 10;
+            max-width: 800px;
+            animation: fadeUp 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+
+        .intro-content h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+        }
+
+        .intro-content p {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+            margin-bottom: 40px;
+        }
+
+        .scroll-indicator {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            animation: bounce 2s infinite ease-in-out;
+            opacity: 0.8;
+        }
+
+        .scroll-indicator span {
+            font-size: 1.5rem;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(10px); }
+        }
+
+        /* WAVES */
+        .waves-container {
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 150px;
+            overflow: hidden;
+            line-height: 0;
+            pointer-events: none;
+        }
+
+        .waves-container svg {
+            position: absolute;
+            bottom: 0;
+            width: 200%;
+            height: 100%;
+        }
+
+        .wave1 { 
+            fill: var(--bg-color); 
+            animation: moveWave 14s ease-in-out infinite alternate; 
+        }
+        
+        .wave2 { 
+            fill: rgba(248, 250, 252, 0.6); 
+            animation: moveWave 9s ease-in-out infinite alternate-reverse; 
+        }
+
+        @keyframes moveWave { 
+            0% { transform: translateX(0); } 
+            100% { transform: translateX(-50%); } 
+        }
+
+        /* BENTO GRID SYSTEM */
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-auto-rows: minmax(220px, auto);
+            gap: 24px;
+            opacity: 0; 
+            transform: translateY(30px);
+            transition: opacity 1s ease, transform 1s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .bento-grid.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .span-2 { grid-column: span 2; }
+        .span-3 { grid-column: span 3; }
+        .row-span-2 { grid-row: span 2; }
+
+        /* BENTO TILES */
+        .bento-tile {
+            background: var(--tile-white);
+            border-radius: 28px;
+            padding: 35px;
+            display: flex;
+            flex-direction: column;
+            border: 2px solid #f1f5f9;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bento-tile:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.05);
+        }
+
+        .tile-blue { background: var(--tile-blue); border-color: var(--tile-blue-border); }
+        .tile-green { background: var(--tile-green); border-color: var(--tile-green-border); }
+        .tile-purple { background: var(--tile-purple); border-color: var(--tile-purple-border); }
+        .tile-peach { background: var(--tile-peach); border-color: var(--tile-peach-border); }
+        .tile-rose { background: var(--tile-rose); border-color: var(--tile-rose-border); }
+        .tile-alert { background: var(--tile-red-alert); border-color: var(--tile-red-border); }
+
+        .icon-header {
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+
+        h2 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            line-height: 1.2;
+            color: var(--text-dark);
+        }
+
+        .bento-tile p {
+            font-size: 1rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .tile-blue p, .tile-green p, .tile-purple p, .tile-peach p, .tile-rose p, .tile-alert p {
+            color: #334155; 
+        }
+
+        .rule-list {
+            list-style: none;
+            margin-top: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .rule-list li {
+            background: rgba(255, 255, 255, 0.6);
+            padding: 15px 20px;
+            border-radius: 16px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        @media (max-width: 900px) {
+            .bento-grid { grid-template-columns: repeat(2, 1fr); }
+            .span-3 { grid-column: span 2; }
+            .intro-content h1 { font-size: 2.8rem; }
+        }
+
+        @media (max-width: 600px) {
+            .bento-grid { grid-template-columns: 1fr; }
+            .span-2, .span-3, .row-span-2 { grid-column: span 1; grid-row: span 1; }
+            .intro-content h1 { font-size: 2.2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- INTRODUCTORY PHASE -->
+    <div class="intro-section">
+        <div class="intro-content">
+            <h1>Welcome to Jarvis</h1>
+            <p>This is a quiet, secure space designed to help you understand UPI fraud and digital safety without the usual panic or technical clutter. Take a breath, read at your own pace, and scroll down whenever you are ready to explore the dashboard.</p>
+            
+            <div class="scroll-indicator">
+                Scroll to begin
+                <span>↓</span>
+            </div>
+        </div>
+
+        <div class="waves-container">
+            <svg class="wave2" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z"></path>
+            </svg>
+            <svg class="wave1" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z"></path>
+            </svg>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="bento-grid" id="bentoGrid">
+            
+            <!-- MANDATORY SAFETY REMINDER BANNER (Required by HCL Jigsaw Rules) -->
+            <div class="bento-tile span-3 tile-alert">
+                <div class="icon-header">⚠️</div>
+                <h2>Mandatory Security Notice</h2>
+                <p style="font-weight: 700; color: #991b1b;">Never type your real PIN or OTP here. This AI assistant is strictly for safety awareness and will never ask for your real banking credentials, card numbers, or passwords.</p>
+            </div>
+
+            <!-- HEADER TILE -->
+            <div class="bento-tile span-2 tile-blue">
+                <div class="icon-header">🛡️</div>
+                <h2>Jarvis Cyber Defense</h2>
+                <p>Your secure, quick-glance dashboard for digital protection. Everything you need to know about navigating UPI and avoiding online payment traps, right at your fingertips.</p>
+            </div>
+
+            <!-- AI STATUS TILE -->
+            <div class="bento-tile tile-purple">
+                <div class="icon-header">🤖</div>
+                <h2>AI Active</h2>
+                <p>Jarvis is running in the bottom right corner. Please feel welcome to speak or type in your preferred language.</p>
+            </div>
+
+            <!-- CORE RULES -->
+            <div class="bento-tile row-span-2 tile-green">
+                <div class="icon-header">📌</div>
+                <h2>The Golden Rules</h2>
+                <p>Memorize these three principles and you will virtually eliminate your risk of payment fraud.</p>
+                <ul class="rule-list">
+                    <li><span>1️⃣</span> PIN is ONLY for sending money. Never to receive.</li>
+                    <li><span>2️⃣</span> Never share your screen or download AnyDesk for "support".</li>
+                    <li><span>3️⃣</span> Always verify the receiver's name before typing your PIN.</li>
+                </ul>
+            </div>
+
+            <!-- SCAM TILE 1 -->
+            <div class="bento-tile">
+                <div class="icon-header">💸</div>
+                <h2>The Fake Refund</h2>
+                <p>Scammers send a "Collect Request" to your app, disguising it as a refund. If you tap approve and enter your PIN, money leaves your bank.</p>
+            </div>
+
+            <!-- SCAM TILE 2 -->
+            <div class="bento-tile">
+                <div class="icon-header">📷</div>
+                <h2>QR Code Traps</h2>
+                <p>Scanning a QR code is a "push" action strictly used to pay someone else. Never scan a code expecting to receive funds.</p>
+            </div>
+
+            <!-- EMERGENCY HELPLINE TILE -->
+            <div class="bento-tile span-2 tile-rose">
+                <div class="icon-header">🚨</div>
+                <h2>Emergency Protocol & Helplines</h2>
+                <p>If compromised, freeze your account immediately through your bank app. Report cyber fraud directly to the National Cyber Crime Reporting Portal at <strong>cybercrime.gov.in</strong>.</p>
+                <div style="margin-top: 15px; font-size: 2rem; font-weight: 800; color: #9f1239;">
+                    DIAL HELPLINE: 
+                    <a href="tel:1930" style="text-decoration: none; color: inherit;">
+                        1930
+                        <span style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10;"></span>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ELEVENLABS NATIVE WIDGET -->
+    <elevenlabs-convai agent-id="g83WfHDnNt6MAtHcu6ju"></elevenlabs-convai>
+    <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
+
+    <!-- Scroll Reveal Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const grid = document.getElementById('bentoGrid');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 }); 
+
+            observer.observe(grid);
+        });
+    </script>
+</body>
+</html>
